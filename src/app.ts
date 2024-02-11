@@ -1,4 +1,5 @@
 import Fastify, { FastifyError, FastifyInstance } from "fastify";
+import AutoLoad from "@fastify/autoload";
 import fastifyHelmet from "@fastify/helmet";
 import fastifyCors from "@fastify/cors";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
@@ -19,6 +20,7 @@ import { initSwagger } from "@plugins/swagger";
 import { schemaErrorFormatter } from "@utils/schemaErrorFormatter";
 
 import { schema } from "@utils/validateEnv";
+import { join } from "path";
 
 class App {
   public app: FastifyInstance;
@@ -61,7 +63,7 @@ class App {
 
   private init() {
     this.initializePlugins();
-    // this.initializeRoutes();
+    this.initializeRoutes();
     this.initializeErrorHandling();
   }
 
@@ -72,15 +74,18 @@ class App {
       credentials: CREDENTIALS === "true",
     });
     this.app.register(fastifyHelmet);
-    console.log("SECRET", SECRET_KEY);
     this.app.register(fastifyJwt, { secret: SECRET_KEY ?? "" });
     this.app.register(authentication);
     this.app.register(initSwagger);
   }
 
-  // private initializeRoutes() {
-  //   this.app.register(initializeRoutes, { prefix: `api/${API_VERSION}` });
-  // }
+  private initializeRoutes() {
+    this.app.register(AutoLoad, {
+      dir: join(__dirname, "/routes"),
+      dirNameRoutePrefix: false,
+      options: { prefix: `/api` },
+    });
+  }
 
   private initializeErrorHandling() {
     this.app.setErrorHandler((error: FastifyError, request, reply) => {

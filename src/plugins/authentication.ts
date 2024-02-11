@@ -13,6 +13,8 @@ export const authentication = fastifyPlugin(
             : "") || "";
 
         const payload = fastify.jwt.verify(authorization) as { email: string };
+
+        console.log("AUTH PAYLOAD", payload);
       } catch (error) {
         throw new Unauthorized();
       }

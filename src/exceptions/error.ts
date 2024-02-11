@@ -1,44 +1,38 @@
-export class NotFound extends Error {
+class BaseError extends Error {
   statusCode: number;
 
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+export class NotFound extends BaseError {
   constructor(message = "Not found") {
-    super(message);
-    this.statusCode = 404;
+    super(message, 404);
   }
 }
 
-export class Conflict extends Error {
-  statusCode: number;
-
+export class Conflict extends BaseError {
   constructor(message = "Conflict") {
-    super(message);
-    this.statusCode = 409;
+    super(message, 409);
   }
 }
 
-export class Unauthorized extends Error {
-  statusCode: number;
-
+export class Unauthorized extends BaseError {
   constructor(message = "Unauthorized") {
-    super(message);
-    this.statusCode = 401;
+    super(message, 401);
   }
 }
 
-export class BadRequest extends Error {
-  statusCode: number;
-
+export class BadRequest extends BaseError {
   constructor(message = "Bad Request") {
-    super(message);
-    this.statusCode = 400;
+    super(message, 400);
   }
 }
 
-export class Forbidden extends Error {
-  statusCode: number;
-
+export class Forbidden extends BaseError {
   constructor(message = "Forbidden") {
-    super(message);
-    this.statusCode = 403;
+    super(message, 403);
   }
 }
