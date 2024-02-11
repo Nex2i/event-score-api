@@ -4,7 +4,7 @@ import fastifyHelmet from "@fastify/helmet";
 import fastifyCors from "@fastify/cors";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastifyJwt from "@fastify/jwt";
-import { CREDENTIALS, NODE_ENV, ORIGIN, PORT, SECRET_KEY } from "@config";
+import { CREDENTIALS, ORIGIN, PORT, SECRET_KEY } from "@config";
 import fastifyEnv from "@fastify/env";
 import { authentication } from "@plugins/authentication";
 import { initSwagger } from "@plugins/swagger";
@@ -27,7 +27,6 @@ async function startServer() {
     logger: true,
   }).withTypeProvider<TypeBoxTypeProvider>();
 
-  const env: string = NODE_ENV ?? "development";
   const port: number = Number(PORT) ?? 3001;
 
   // Initialize Plugins
