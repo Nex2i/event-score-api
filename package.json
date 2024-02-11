@@ -7,7 +7,7 @@
     "prod": "npm install && npm run db:deploy && npm run build",
     "dev": "nodemon",
     "dev:server": "npm run build && npm run start",
-    "db:deploy": "npm run db:generate && npm run db:migrate && npm run db:seed",
+    "db:deploy": "npm run db:generate && npm run db:migrate",
     "db:generate": "npx prisma generate",
     "db:migrate": "npx prisma migrate deploy",
     "db:seed": "npx prisma db seed",
