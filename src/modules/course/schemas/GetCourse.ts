@@ -10,7 +10,7 @@ import { FastifySchema } from "fastify";
 
 export const GetCourseSchema: FastifySchema = {
   description: "Course GET",
-  tags: ["coiurse"],
+  tags: ["course"],
   response: {
     201: {
       description: "Successful login response",
