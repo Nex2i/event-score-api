@@ -25,7 +25,7 @@ export const initSwagger = fastifyPlugin(
             in: "header",
           },
         },
-        schemes: ["http"],
+        schemes: ["http", "https"],
         security: [],
       },
     };
