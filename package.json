@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "prod": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json && node dist/index.js",
+    "prod": "npm run build",
     "dev": "nodemon",
     "dev:server": "npm run build && npm run start",
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
