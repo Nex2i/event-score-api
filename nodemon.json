@@ -2,5 +2,5 @@
   "watch": ["src"],
   "ext": "ts,json",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json && node dist/index.js"
+  "exec": "npm run dev:server"
 }

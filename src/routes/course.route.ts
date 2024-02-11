@@ -6,8 +6,7 @@ const coursePath = "/course";
 
 export default async function Course(
   fastify: FastifyInstance,
-  opts: RouteOptions,
-  done: () => void
+  opts: RouteOptions
 ) {
   fastify.route({
     method: "GET",
@@ -15,6 +14,4 @@ export default async function Course(
     schema: GetCourseSchema,
     handler: GetCourse,
   });
-
-  done();
 }

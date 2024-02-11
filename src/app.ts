@@ -4,104 +4,73 @@ import fastifyHelmet from "@fastify/helmet";
 import fastifyCors from "@fastify/cors";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastifyJwt from "@fastify/jwt";
-import {
-  API_VERSION,
-  CREDENTIALS,
-  NODE_ENV,
-  ORIGIN,
-  PORT,
-  SECRET_KEY,
-} from "@config";
+import { CREDENTIALS, NODE_ENV, ORIGIN, PORT, SECRET_KEY } from "@config";
 import fastifyEnv from "@fastify/env";
-
 import { authentication } from "@plugins/authentication";
 import { initSwagger } from "@plugins/swagger";
-
 import { schemaErrorFormatter } from "@utils/schemaErrorFormatter";
-
 import { schema } from "@utils/validateEnv";
 import { join } from "path";
 
-class App {
-  public app: FastifyInstance;
-
-  public env: string;
-
-  public port: number;
-
-  constructor() {
-    this.app = Fastify({
-      schemaErrorFormatter,
-      ajv: {
-        customOptions: {
-          coerceTypes: false,
-          allErrors: true,
-        },
-        plugins: [],
+async function startServer() {
+  const app: FastifyInstance = Fastify({
+    schemaErrorFormatter,
+    ajv: {
+      customOptions: {
+        coerceTypes: false,
+        allErrors: true,
       },
-      logger: true,
-    }).withTypeProvider<TypeBoxTypeProvider>();
+      plugins: [],
+    },
+    logger: true,
+  }).withTypeProvider<TypeBoxTypeProvider>();
 
-    this.env = NODE_ENV ?? "development";
-    this.port = Number(PORT) ?? 3001;
+  const env: string = NODE_ENV ?? "development";
+  const port: number = Number(PORT) ?? 3001;
 
-    this.init();
+  // Initialize Plugins
+  await app.register(fastifyEnv, { dotenv: true, schema });
+  await app.register(fastifyCors, {
+    origin: ORIGIN,
+    credentials: CREDENTIALS === "true",
+  });
+  await app.register(fastifyHelmet);
+  await app.register(fastifyJwt, { secret: SECRET_KEY ?? "" });
+  await app.register(authentication);
+  await app.register(initSwagger);
+
+  // Initialize Routes
+  await app.register(AutoLoad, {
+    dir: join(__dirname, "/routes"),
+    dirNameRoutePrefix: false,
+    options: { prefix: `/api` },
+  });
+
+  // Initialize Error Handling
+  app.setErrorHandler((error: FastifyError, request, reply) => {
+    const status: number = error.statusCode ?? 500;
+    const message: string =
+      status === 500
+        ? "Something went wrong"
+        : error.message ?? "Something went wrong";
+
+    app.log.error(
+      `[${request.method}] ${request.url} >> StatusCode:: ${status}, Message:: ${message}`
+    );
+
+    return reply.status(status).send({ error: true, message });
+  });
+
+  // Start listening
+  try {
+    await app.listen({ port });
+    console.log(`Server running on port ${port}`);
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
   }
 
-  public async listen() {
-    try {
-      await this.app.listen({ port: this.port });
-    } catch (err) {
-      this.app.log.error(err);
-      process.exit(1);
-    }
-  }
-
-  public getServer() {
-    return this.app;
-  }
-
-  private init() {
-    this.initializePlugins();
-    this.initializeRoutes();
-    this.initializeErrorHandling();
-  }
-
-  private initializePlugins() {
-    this.app.register(fastifyEnv, { dotenv: true, schema });
-    this.app.register(fastifyCors, {
-      origin: ORIGIN,
-      credentials: CREDENTIALS === "true",
-    });
-    this.app.register(fastifyHelmet);
-    this.app.register(fastifyJwt, { secret: SECRET_KEY ?? "" });
-    this.app.register(authentication);
-    this.app.register(initSwagger);
-  }
-
-  private initializeRoutes() {
-    this.app.register(AutoLoad, {
-      dir: join(__dirname, "/routes"),
-      dirNameRoutePrefix: false,
-      options: { prefix: `/api` },
-    });
-  }
-
-  private initializeErrorHandling() {
-    this.app.setErrorHandler((error: FastifyError, request, reply) => {
-      const status: number = error.statusCode ?? 500;
-      const message: string =
-        status === 500
-          ? "Something went wrong"
-          : error.message ?? "Something went wrong";
-
-      this.app.log.error(
-        `[${request.method}] ${request.url} >> StatusCode:: ${status}, Message:: ${message}`
-      );
-
-      return reply.status(status).send({ error: true, message });
-    });
-  }
+  return app;
 }
 
-export default App;
+export default startServer;
