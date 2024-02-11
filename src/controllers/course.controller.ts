@@ -13,7 +13,24 @@ export async function GetCourse(
   const course = await dbClient.course.findUnique({
     where: { id: id },
   });
-  reply.send({ course });
+
+  const eventWithTargetsAndShots = await dbClient.event.findFirst({
+    where: {
+      companyId: id,
+    },
+    include: {
+      Courses: {
+        include: {
+          Targets: {
+            include: {
+              Shots: true, // Retrieves all fields from Shots
+            },
+          },
+        },
+      },
+    },
+  });
+  reply.send({ course, eventWithTargetsAndShots });
 }
 
 export async function GetAllCourses(req: FastifyRequest, reply: FastifyReply) {
