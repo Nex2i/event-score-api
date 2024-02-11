@@ -12,10 +12,7 @@ export const initSwagger = fastifyPlugin(
           description: "swagger documentation for api's in the boilerplate",
           version: "1.0.0",
         },
-        tags: [
-          { name: "user", description: "User related end-points" },
-          { name: "auth", description: "Authentication end-points" },
-        ],
+        tags: [],
         consumes: ["application/json"],
         produces: ["application/json"],
         securityDefinitions: {
