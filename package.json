@@ -7,6 +7,7 @@
     "prod": "npm run build",
     "dev": "nodemon",
     "dev:server": "npm run build && npm run start",
+    "server": "npm run build && npm run start",
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,7 +26,8 @@
     "@fastify/type-provider-typebox": "^4.0.0",
     "dotenv": "^16.4.1",
     "fastify": "^4.26.0",
-    "fastify-plugin": "^4.5.1"
+    "fastify-plugin": "^4.5.1",
+    "prisma": "^5.9.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
