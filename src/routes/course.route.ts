@@ -1,4 +1,4 @@
-import { GetCourse } from "@/controllers/course.controller";
+import { GetAllCourses, GetCourse } from "@/controllers/course.controller";
 import { GetCourseSchema } from "@/modules/course/schemas/GetCourse";
 import { FastifyInstance, RouteOptions } from "fastify";
 
@@ -13,5 +13,11 @@ export default async function Course(
     url: `${coursePath}/:id`,
     schema: GetCourseSchema,
     handler: GetCourse,
+  });
+
+  fastify.route({
+    method: "GET",
+    url: `${coursePath}/`,
+    handler: GetAllCourses,
   });
 }

@@ -15,3 +15,8 @@ export async function GetCourse(
   });
   reply.send({ course });
 }
+
+export async function GetAllCourses(req: FastifyRequest, reply: FastifyReply) {
+  const courses = await dbClient.course.findMany();
+  reply.send({ courses });
+}
