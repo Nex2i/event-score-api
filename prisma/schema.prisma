@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id          String   @id @default(uuid())
+  name        String
+  dateCreated DateTime
+  dateUpdated DateTime
+
+  events Event[]
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  name        String
+  companyId   String
+  dateCreated DateTime
+  dateUpdated DateTime
+
+  Courses Course[]
+  Company Company  @relation(fields: [companyId], references: [id])
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  name        String
+  eventId     String
+  dateCreated DateTime
+  dateUpdated DateTime
+
+  Targets Target[]
+  Event   Event    @relation(fields: [eventId], references: [id])
+}
+
+model Target {
+  id           String   @id @default(uuid())
+  courseId     String
+  targetTypeId String
+  dateCreated  DateTime
+  dateUpdated  DateTime
+
+  Shots      Shot[]
+  TargetType TargetType @relation(fields: [targetTypeId], references: [id])
+  Course     Course     @relation(fields: [courseId], references: [id])
+}
+
+model Shot {
+  id          String   @id @default(uuid())
+  targetId    String
+  dateCreated DateTime
+  dateUpdated DateTime
+
+  Target Target @relation(fields: [targetId], references: [id])
+}
+
+model TargetType {
+  id          String   @id @default(uuid())
+  dateCreated DateTime
+  dateUpdated DateTime
+
+  Target         Target[]
+  TargetTypeRing TargetTypeRing[]
+}
+
+model TargetTypeRing {
+  id           String @id @default(uuid())
+  targetTypeId String
+
+  dateCreated DateTime
+  dateUpdated DateTime
+
+  TargetType TargetType @relation(fields: [targetTypeId], references: [id])
+}

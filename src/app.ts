@@ -12,6 +12,7 @@ import { schemaErrorFormatter } from "@utils/schemaErrorFormatter";
 import { schema } from "@utils/validateEnv";
 import { join } from "path";
 import { defaultErrorMessage } from "./constants";
+import { dbClient } from "./db/db.client";
 
 async function startServer() {
   const app: FastifyInstance = Fastify({
@@ -68,6 +69,7 @@ async function startServer() {
     console.log(`Server running on port ${port}`);
   } catch (err) {
     app.log.error(err);
+    dbClient.$disconnect();
     process.exit(1);
   }
 
