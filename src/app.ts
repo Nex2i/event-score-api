@@ -11,6 +11,7 @@ import { initSwagger } from "@plugins/swagger";
 import { schemaErrorFormatter } from "@utils/schemaErrorFormatter";
 import { schema } from "@utils/validateEnv";
 import { join } from "path";
+import { defaultErrorMessage } from "./constants";
 
 async function startServer() {
   const app: FastifyInstance = Fastify({
@@ -51,8 +52,8 @@ async function startServer() {
     const status: number = error.statusCode ?? 500;
     const message: string =
       status === 500
-        ? "Something went wrong"
-        : error.message ?? "Something went wrong";
+        ? defaultErrorMessage
+        : error.message ?? defaultErrorMessage;
 
     app.log.error(
       `[${request.method}] ${request.url} >> StatusCode:: ${status}, Message:: ${message}`

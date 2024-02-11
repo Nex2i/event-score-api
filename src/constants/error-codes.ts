@@ -1,3 +1,5 @@
+export const defaultErrorMessage = "Something went wrong";
+
 export const responseProperty = {
   message: {
     type: "string",
