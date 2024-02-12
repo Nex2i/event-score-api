@@ -7,7 +7,18 @@ export async function CreateEvent(
   req: FastifyRequest<{ Body: CreateEvent }>,
   reply: FastifyReply
 ) {
-  reply.status(201).send({ message: "Event created" });
+  const { companyId, name, startDate, endDate } = req.body;
+  console.log("Body", req.body);
+  const newEvent = await dbClient.event.create({
+    data: {
+      companyId: companyId,
+      name: name,
+      startDate: startDate,
+      endDate: endDate,
+    },
+  });
+  console.log("New Event", newEvent);
+  reply.status(201).send({ message: "Event created", event: newEvent });
 }
 
 export async function GetEvent(
@@ -17,6 +28,9 @@ export async function GetEvent(
   const { id } = req.params;
   const event = await dbClient.event.findUnique({
     where: { id: id },
+    include: {
+      Courses: true,
+    },
   });
 
   if (!event) throw new NotFound("Event not found: " + id);
