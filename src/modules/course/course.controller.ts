@@ -1,5 +1,5 @@
 import { dbClient } from "@/db/db.client";
-import { Unauthorized } from "@/exceptions/error";
+import { NotFound } from "@/exceptions/error";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export async function GetCourse(
@@ -7,33 +7,34 @@ export async function GetCourse(
   reply: FastifyReply
 ) {
   const { id } = req.params;
-  if (id === "0")
-    throw new Unauthorized("You are not authorized to access this resource");
 
-  const course = await dbClient.course.findUnique({
+  const course = await dbClient.course.findFirst({
     where: { id: id },
-  });
-
-  const eventWithTargetsAndShots = await dbClient.event.findMany({
-    where: {
-      id: course?.eventId,
-    },
     include: {
-      Courses: {
+      Targets: {
         include: {
-          Targets: {
-            include: {
-              Shots: true,
-            },
-          },
+          Shots: true,
         },
       },
     },
   });
-  reply.send({ course, eventWithTargetsAndShots });
+
+  if (!course) {
+    throw new NotFound("Course not found: " + id);
+  }
+  reply.send({ course });
 }
 
 export async function GetAllCourses(req: FastifyRequest, reply: FastifyReply) {
   const courses = await dbClient.course.findMany();
   reply.send({ courses });
+}
+
+export async function CreateCourse(req: FastifyRequest, reply: FastifyReply) {
+  // const course = await dbClient.course.create({
+  //   data: {
+  //     name: "New Course",
+  //   },
+  // });
+  // reply.send({ course });
 }

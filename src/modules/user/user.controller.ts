@@ -3,11 +3,13 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { userTypes } from "./user.constants";
 
 export async function RecordUserShot(
-  req: FastifyRequest<{ Querystring: { shotId: string; score: string } }>,
+  req: FastifyRequest<{
+    Querystring: { shotId: string; score: string; targetId: string };
+  }>,
   reply: FastifyReply
 ) {
-  const { id: userId } = req.user as { id: string };
-  const { shotId, score } = req.query;
+  const { id: userId } = (req.user as { payload: { id: string } }).payload;
+  const { shotId, score, targetId } = req.query;
   const courseShot = await dbClient.shot.findUnique({
     where: { id: shotId },
   });
@@ -16,15 +18,15 @@ export async function RecordUserShot(
     return reply.status(404).send({ message: "Shot not found" });
   }
 
-  await dbClient.userShot.create({
+  const newShot = await dbClient.userShot.create({
     data: {
       userId: userId,
       shotId: shotId,
-      targetId: courseShot.targetId,
+      targetId: targetId,
       score: parseInt(score),
     },
   });
-  reply.send({ message: "Shot recorded" });
+  reply.send({ message: "Shot recorded", shot: newShot });
 }
 
 export async function CreateGuestUser(
