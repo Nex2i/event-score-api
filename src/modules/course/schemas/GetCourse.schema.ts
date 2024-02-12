@@ -1,11 +1,4 @@
-import {
-  ERROR400,
-  ERROR401,
-  ERROR404,
-  ERROR409,
-  ERROR500,
-  responseProperty,
-} from "@/constants";
+import { errorCodesSchema, responseProperty } from "@/constants";
 import { FastifySchema } from "fastify";
 
 export const GetCourseSchema: FastifySchema = {
@@ -23,10 +16,6 @@ export const GetCourseSchema: FastifySchema = {
         },
       },
     },
-    400: ERROR400,
-    401: ERROR401,
-    404: ERROR404,
-    409: ERROR409,
-    500: ERROR500,
+    ...errorCodesSchema,
   },
 };

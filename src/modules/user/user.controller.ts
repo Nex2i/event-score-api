@@ -30,7 +30,7 @@ export async function RecordUserShot(
 }
 
 export async function CreateGuestUser(
-  _req: FastifyRequest,
+  req: FastifyRequest<{ Params: { event: string } }>,
   reply: FastifyReply
 ) {
   const guestUser = await dbClient.user.create({

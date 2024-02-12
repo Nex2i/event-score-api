@@ -37,3 +37,11 @@ export const ERROR500 = {
   description: "Internal Sever Error",
   properties: responseProperty,
 };
+
+export const errorCodesSchema = {
+  400: ERROR400,
+  401: ERROR401,
+  404: ERROR404,
+  409: ERROR409,
+  500: ERROR500,
+};
