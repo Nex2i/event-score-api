@@ -4,22 +4,24 @@ import { fastifyPlugin } from "fastify-plugin";
 import { Unauthorized } from "@exceptions/error";
 
 export const authentication = fastifyPlugin(
-  (fastify: FastifyInstance, _: unknown, done: () => void) => {
+  async (fastify: FastifyInstance, _: unknown) => {
     const authPreHandler = async (request: FastifyRequest) => {
       try {
-        const authorization =
-          (request.headers.authorization
-            ? request.headers.authorization?.split("Bearer ")[1]
-            : "") || "";
+        if (!request.headers?.authorization?.includes("Bearer")) {
+          throw Error("No Authorization Header");
+        }
+        const authorization = request.headers.authorization.split(
+          "Bearer "
+        )[1] as string;
 
-        const payload = fastify.jwt.verify(authorization) as { email: string };
+        const payload = fastify.jwt.verify(authorization);
 
-        console.log("AUTH PAYLOAD", payload);
+        request.user = payload;
       } catch (error) {
+        console.log("AUTH ERROR", error);
         throw new Unauthorized();
       }
     };
     fastify.decorate("authenticateUser", authPreHandler);
-    done();
   }
 );

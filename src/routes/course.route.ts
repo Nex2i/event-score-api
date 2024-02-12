@@ -1,5 +1,5 @@
-import { GetAllCourses, GetCourse } from "@/controllers/course.controller";
-import { GetCourseSchema } from "@/modules/course/schemas/GetCourse";
+import { GetAllCourses, GetCourse } from "@/modules/course/course.controller";
+import { GetCourseSchema } from "@/modules/course/schemas/GetCourse.schema";
 import { FastifyInstance, RouteOptions } from "fastify";
 
 const coursePath = "/course";

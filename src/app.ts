@@ -4,7 +4,7 @@ import fastifyHelmet from "@fastify/helmet";
 import fastifyCors from "@fastify/cors";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastifyJwt from "@fastify/jwt";
-import { CREDENTIALS, ORIGIN, PORT, SECRET_KEY } from "@config";
+import { CREDENTIALS, PORT, SECRET_KEY } from "@config";
 import fastifyEnv from "@fastify/env";
 import { authentication } from "@plugins/authentication";
 import { initSwagger } from "@plugins/swagger";
@@ -24,7 +24,7 @@ async function startServer() {
       },
       plugins: [],
     },
-    logger: true,
+    logger: false,
   }).withTypeProvider<TypeBoxTypeProvider>();
 
   const port: number = Number(PORT) ?? 3001;
@@ -37,8 +37,13 @@ async function startServer() {
   });
   await app.register(fastifyHelmet);
   await app.register(fastifyJwt, { secret: SECRET_KEY ?? "" });
-  await app.register(authentication);
   await app.register(initSwagger);
+  await app.register(authentication);
+
+  // await app.register(AutoLoad, {
+  //   dir: join(__dirname, "/plugins"),
+  //   dirNameRoutePrefix: false,
+  // });
 
   // Initialize Routes
   await app.register(AutoLoad, {

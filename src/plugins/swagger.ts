@@ -9,7 +9,7 @@ export const initSwagger = fastifyPlugin(
       swagger: {
         info: {
           title: "Fastify Swagger",
-          description: "swagger documentation for api's in the boilerplate",
+          description: "Swagger documentation for APIs in the boilerplate",
           version: "1.0.0",
         },
         tags: [],
@@ -23,7 +23,8 @@ export const initSwagger = fastifyPlugin(
           },
         },
         schemes: ["http", "https"],
-        security: [],
+        // Apply bearerAuth security globally to all routes
+        security: [{ bearerAuth: [] }],
       },
     };
 

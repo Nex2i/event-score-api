@@ -14,16 +14,16 @@ export async function GetCourse(
     where: { id: id },
   });
 
-  const eventWithTargetsAndShots = await dbClient.event.findFirst({
+  const eventWithTargetsAndShots = await dbClient.event.findMany({
     where: {
-      companyId: id,
+      id: course?.eventId,
     },
     include: {
       Courses: {
         include: {
           Targets: {
             include: {
-              Shots: true, // Retrieves all fields from Shots
+              Shots: true,
             },
           },
         },
