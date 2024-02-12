@@ -3,7 +3,7 @@ import fastifySwagger, { FastifyDynamicSwaggerOptions } from "@fastify/swagger";
 import fastifySwaggerUi, { FastifySwaggerUiOptions } from "@fastify/swagger-ui";
 import { fastifyPlugin } from "fastify-plugin";
 
-export const initSwagger = fastifyPlugin(
+export default fastifyPlugin(
   (fastify: FastifyInstance, _: unknown, done: () => void) => {
     const opts: FastifyDynamicSwaggerOptions = {
       swagger: {

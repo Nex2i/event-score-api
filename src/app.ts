@@ -6,8 +6,6 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastifyJwt from "@fastify/jwt";
 import { CREDENTIALS, PORT, SECRET_KEY } from "@config";
 import fastifyEnv from "@fastify/env";
-import { authentication } from "@plugins/authentication";
-import { initSwagger } from "@plugins/swagger";
 import { schemaErrorFormatter } from "@utils/schemaErrorFormatter";
 import { schema } from "@utils/validateEnv";
 import { join } from "path";
@@ -37,13 +35,12 @@ async function startServer() {
   });
   await app.register(fastifyHelmet);
   await app.register(fastifyJwt, { secret: SECRET_KEY ?? "" });
-  await app.register(initSwagger);
-  await app.register(authentication);
 
-  // await app.register(AutoLoad, {
-  //   dir: join(__dirname, "/plugins"),
-  //   dirNameRoutePrefix: false,
-  // });
+  //Init Custom Plugins
+  await app.register(AutoLoad, {
+    dir: join(__dirname, "/plugins"),
+    dirNameRoutePrefix: false,
+  });
 
   // Initialize Routes
   await app.register(AutoLoad, {
