@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "prod": "npm install && npm run db:deploy && npm run build",
-    "dev": "nodemon",
+    "dev": "npm i && npm run db:deploy && nodemon",
     "dev:server": "npm run build && npm run start",
     "db:deploy": "npm run db:generate && npm run db:migrate",
     "db:generate": "npx prisma generate",
@@ -22,7 +22,6 @@
   },
   "keywords": [],
   "author": "Ryan Hutchison",
-  "license": "MIT",
   "dependencies": {
     "@fastify/autoload": "^5.8.0",
     "@fastify/cors": "^9.0.1",
@@ -33,11 +32,13 @@
     "@fastify/swagger-ui": "^2.1.0",
     "@fastify/type-provider-typebox": "^4.0.0",
     "@prisma/client": "^5.9.1",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.1",
     "fastify": "^4.26.0",
     "fastify-plugin": "^4.5.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.11.17",
     "nodemon": "^3.0.3",
     "prisma": "^5.9.1",

@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum USER_TYPE {
+  GUEST
+  ADMIN
+}
+
 model Company {
   id          String   @id @default(uuid())
   name        String
@@ -14,6 +19,7 @@ model Company {
   dateUpdated DateTime
 
   events Event[]
+  User   User[]
 }
 
 model Event {
@@ -85,12 +91,29 @@ model TargetTypeRing {
 }
 
 model User {
-  id                String             @id @default(uuid())
-  type              String
-  dateCreated       DateTime           @default(now())
-  dateUpdated       DateTime           @default(now())
+  id          String    @id @default(uuid())
+  type        USER_TYPE @default(GUEST)
+  dateCreated DateTime  @default(now())
+  dateUpdated DateTime  @default(now())
+  companyId   String
+
   UserShots         UserShot[]
   UserCourseRecords UserCourseRecord[]
+  UserAuth          UserAuth[]
+  Company           Company            @relation(fields: [companyId], references: [id])
+}
+
+model UserAuth {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  email          String
+  hashedPassword String
+  dateCreated    DateTime @default(now())
+  dateUpdated    DateTime @default(now())
+
+  User User @relation(fields: [userId], references: [id])
+
+  @@index([email])
 }
 
 model UserShot {

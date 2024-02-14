@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { cryptHash } from "../src/libs/bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -35,6 +36,20 @@ async function main() {
         name: `Company ${i}`,
         dateCreated: new Date(),
         dateUpdated: new Date(),
+      },
+    });
+
+    const seedUser = await prisma.user.create({
+      data: {
+        type: "ADMIN",
+        companyId: company.id,
+      },
+    });
+    await prisma.userAuth.create({
+      data: {
+        userId: seedUser.id,
+        email: `test${i}`,
+        hashedPassword: await cryptHash("password"),
       },
     });
 

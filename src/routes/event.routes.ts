@@ -1,4 +1,8 @@
-import { CreateEvent, GetEvent } from "@/modules/event/event.controller";
+import {
+  CreateEvent,
+  GetCompayEvents,
+  GetEvent,
+} from "@/modules/event/event.controller";
 import { CreateEventSchema } from "@/modules/event/schemas/CreateEvent.schema";
 import { GetEventSchema } from "@/modules/event/schemas/GetEvent.schema";
 import { FastifyInstance, RouteOptions } from "fastify";
@@ -14,6 +18,20 @@ export default async function Event(
     url: `${eventPath}/:id`,
     handler: GetEvent,
     schema: GetEventSchema,
+  });
+
+  fastify.route({
+    method: "GET",
+    url: `${eventPath}/`,
+    handler: GetCompayEvents,
+    schema: {
+      querystring: {
+        type: "object",
+        properties: {
+          companyId: { type: "string" },
+        },
+      },
+    },
   });
 
   fastify.route({

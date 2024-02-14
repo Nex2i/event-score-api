@@ -11,5 +11,13 @@ export default async function User(
     method: "POST",
     url: `${userPath}/guest`,
     handler: CreateGuestUser,
+    schema: {
+      params: {
+        type: "object",
+        properties: {
+          eventId: { type: "string" },
+        },
+      },
+    },
   });
 }

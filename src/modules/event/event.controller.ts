@@ -21,6 +21,19 @@ export async function CreateEvent(
   reply.status(201).send({ message: "Event created", event: newEvent });
 }
 
+export async function GetCompayEvents(
+  req: FastifyRequest<{ Querystring: { companyId: string } }>,
+  reply: FastifyReply
+) {
+  const { companyId } = req.query;
+  const events = await dbClient.event.findMany({
+    where: {
+      companyId: companyId,
+    },
+  });
+  reply.send({ events });
+}
+
 export async function GetEvent(
   req: FastifyRequest<{ Params: { id: string } }>,
   reply: FastifyReply
