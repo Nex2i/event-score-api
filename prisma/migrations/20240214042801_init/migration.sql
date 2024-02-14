@@ -1,20 +1,3 @@
-DO
-$do$
-DECLARE
-   _tbl text;
-   _sch text;
-BEGIN
-   FOR _tbl IN
-      SELECT quote_ident(schemaname) || '.' || quote_ident(tablename)
-      FROM   pg_tables
-      WHERE  schemaname != 'pg_catalog' AND 
-             schemaname != 'information_schema'
-   LOOP
-      EXECUTE 'DROP TABLE IF EXISTS ' || _tbl || ' CASCADE;';
-   END LOOP;
-END
-$do$;
-
 -- CreateEnum
 CREATE TYPE "USER_TYPE" AS ENUM ('GUEST', 'ADMIN');
 
