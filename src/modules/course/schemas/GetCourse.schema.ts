@@ -1,9 +1,10 @@
 import { errorCodesSchema, responseProperty } from "@/constants";
 import { FastifySchema } from "fastify";
+import { BaseCourseSchema } from "./Course.base.schema";
 
 export const GetCourseSchema: FastifySchema = {
+  ...BaseCourseSchema,
   description: "Course GET",
-  tags: ["course"],
   response: {
     201: {
       description: "Successful login response",

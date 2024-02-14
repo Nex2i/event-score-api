@@ -1,4 +1,5 @@
 import { dbClient } from "@/db/db.client";
+import { CreateCourse } from "./course.types";
 import { NotFound } from "@/exceptions/error";
 import { FastifyReply, FastifyRequest } from "fastify";
 
@@ -30,11 +31,16 @@ export async function GetAllCourses(req: FastifyRequest, reply: FastifyReply) {
   reply.send({ courses });
 }
 
-export async function CreateCourse(req: FastifyRequest, reply: FastifyReply) {
-  // const course = await dbClient.course.create({
-  //   data: {
-  //     name: "New Course",
-  //   },
-  // });
-  // reply.send({ course });
+export async function CreateCourse(
+  req: FastifyRequest<{ Body: CreateCourse }>,
+  reply: FastifyReply
+) {
+  const { name, eventId } = req.body;
+  const newCourse = await dbClient.course.create({
+    data: {
+      eventId,
+      name,
+    },
+  });
+  reply.send({ course: newCourse });
 }

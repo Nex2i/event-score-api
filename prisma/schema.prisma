@@ -66,6 +66,7 @@ model Shot {
 
 model TargetType {
   id          String   @id @default(uuid())
+  isTemplate  Boolean  @default(false)
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now())
 
