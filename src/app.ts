@@ -22,7 +22,7 @@ async function startServer() {
       },
       plugins: [],
     },
-    logger: false,
+    logger: true,
   }).withTypeProvider<TypeBoxTypeProvider>();
 
   const port: number = Number(PORT) ?? 3001;
@@ -34,7 +34,10 @@ async function startServer() {
     credentials: CREDENTIALS === "true",
   });
   await app.register(fastifyHelmet);
-  await app.register(fastifyJwt, { secret: SECRET_KEY ?? "" });
+  await app.register(fastifyJwt, {
+    secret: SECRET_KEY ?? "",
+    sign: { expiresIn: "7d" },
+  });
 
   //Init Custom Plugins
   await app.register(AutoLoad, {

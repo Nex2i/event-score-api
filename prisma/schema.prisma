@@ -14,32 +14,40 @@ enum USER_TYPE {
 }
 
 model Company {
-  id          String   @id @default(uuid())
-  name        String
-  dateCreated DateTime
-  dateUpdated DateTime
+  id             String  @id @default(uuid())
+  name           String
+  streetAddress1 String  @default("")
+  streetAddress2 String?
+  city           String  @default("")
+  state          String  @default("")
+  zip            String  @default("")
+
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now())
 
   events Event[]
   User   User[]
 }
 
 model Event {
-  id          String    @id @default(uuid())
-  name        String
-  companyId   String
-  startDate   DateTime?
-  endDate     DateTime?
-  dateCreated DateTime  @default(now())
-  dateUpdated DateTime  @default(now())
+  id        String    @id @default(uuid())
+  name      String
+  companyId String
+  startDate DateTime?
+  endDate   DateTime?
+
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now())
 
   Courses Course[]
   Company Company  @relation(fields: [companyId], references: [id])
 }
 
 model Course {
-  id          String   @id @default(uuid())
-  name        String
-  eventId     String
+  id      String @id @default(uuid())
+  name    String
+  eventId String
+
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now())
 
@@ -49,11 +57,12 @@ model Course {
 }
 
 model Target {
-  id           String   @id @default(uuid())
+  id           String @id @default(uuid())
   courseId     String
   targetTypeId String
-  dateCreated  DateTime @default(now())
-  dateUpdated  DateTime @default(now())
+
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now())
 
   Shots      Shot[]
   TargetType TargetType @relation(fields: [targetTypeId], references: [id])
@@ -92,11 +101,12 @@ model TargetTypeRing {
 }
 
 model User {
-  id          String    @id @default(uuid())
-  type        USER_TYPE @default(GUEST)
-  dateCreated DateTime  @default(now())
-  dateUpdated DateTime  @default(now())
-  companyId   String
+  id        String    @id @default(uuid())
+  type      USER_TYPE @default(GUEST)
+  companyId String
+
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now())
 
   UserShots         UserShot[]
   UserCourseRecords UserCourseRecord[]
@@ -105,12 +115,14 @@ model User {
 }
 
 model UserAuth {
-  id             String   @id @default(uuid())
-  userId         String   @unique
-  email          String
+  id             String  @id @default(uuid())
+  userId         String  @unique
+  email          String  @unique
+  phoneNumber    String?
   hashedPassword String
-  dateCreated    DateTime @default(now())
-  dateUpdated    DateTime @default(now())
+
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now())
 
   User User @relation(fields: [userId], references: [id])
 
@@ -118,11 +130,12 @@ model UserAuth {
 }
 
 model UserShot {
-  id          String   @id @default(uuid())
-  userId      String
-  shotId      String
-  targetId    String
-  score       Int
+  id       String @id @default(uuid())
+  userId   String
+  shotId   String
+  targetId String
+  score    Int
+
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now())
 
@@ -132,10 +145,11 @@ model UserShot {
 }
 
 model UserCourseRecord {
-  id          String   @id @default(uuid())
-  userId      String
-  courseId    String
-  totalScore  Int
+  id         String @id @default(uuid())
+  userId     String
+  courseId   String
+  totalScore Int
+
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now())
 
