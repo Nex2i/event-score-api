@@ -32,9 +32,10 @@ model Company {
 model Event {
   id        String    @id @default(uuid())
   name      String
-  companyId String
   startDate DateTime?
   endDate   DateTime?
+
+  companyId String
 
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now())
@@ -44,8 +45,9 @@ model Event {
 }
 
 model Course {
-  id      String @id @default(uuid())
-  name    String
+  id   String @id @default(uuid())
+  name String
+
   eventId String
 
   dateCreated DateTime @default(now())
@@ -57,22 +59,27 @@ model Course {
 }
 
 model Target {
-  id           String @id @default(uuid())
+  id       String @id @default(uuid())
+  name     String @default("")
+  distance Int    @default(0)
+
   courseId     String
   targetTypeId String
 
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now())
 
-  Shots      Shot[]
   TargetType TargetType @relation(fields: [targetTypeId], references: [id])
   Course     Course     @relation(fields: [courseId], references: [id])
+  Shots      Shot[]
   UserShot   UserShot[]
 }
 
 model Shot {
-  id          String   @id @default(uuid())
-  targetId    String
+  id String @id @default(uuid())
+
+  targetId String
+
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now())
 

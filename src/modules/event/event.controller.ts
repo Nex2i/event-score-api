@@ -8,7 +8,6 @@ export async function CreateEvent(
   reply: FastifyReply
 ) {
   const { companyId, name, startDate, endDate } = req.body;
-  console.log("Body", req.body);
   const newEvent = await dbClient.event.create({
     data: {
       companyId: companyId,
@@ -17,7 +16,6 @@ export async function CreateEvent(
       endDate: endDate,
     },
   });
-  console.log("New Event", newEvent);
   reply.status(201).send({ message: "Event created", event: newEvent });
 }
 

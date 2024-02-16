@@ -11,6 +11,24 @@ export const CreateCourseSchema: FastifySchema = {
     properties: {
       name: { type: "string" },
       eventId: { type: "string" },
+      targets: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            name: { type: "string" },
+            distance: { type: "number" },
+            targetTypeId: { type: "string" },
+            shots: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {},
+              },
+            },
+          },
+        },
+      },
     },
   },
   response: {

@@ -7,6 +7,8 @@ export const schemaErrorFormatter = (
     return new Error("Validation failed: No errors found.");
   }
 
+  console.error("ERROR: ", errors);
+
   const firstError = errors[0];
   const instancePath = firstError?.instancePath.substring(1) ?? "";
   const message = firstError?.message ?? "";

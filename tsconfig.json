@@ -28,6 +28,7 @@
       "@utils/*": ["utils/*"],
       "@constants/*": ["constants/*"],
       "@plugins/*": ["plugins/*"],
+      "@modules/*": ["modules/*"],
       "@components/*": ["components/*"],
       "@exceptions/*": ["exceptions/*"]
     }
