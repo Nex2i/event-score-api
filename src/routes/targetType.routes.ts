@@ -1,6 +1,7 @@
+import { GetTargetRingsByTargetId } from "@/modules/target/targetType.controller";
 import { FastifyInstance, RouteOptions } from "fastify";
 
-const targetTypePath = "/targetType";
+const targetTypePath = "/target-type";
 
 export default async function TargetType(
   fastify: FastifyInstance,
@@ -21,20 +22,18 @@ export default async function TargetType(
 
   fastify.route({
     method: "GET",
-    url: `${targetTypePath}/`,
+    url: `${targetTypePath}`,
     schema: {
       querystring: {
-        template: { type: "string" },
+        targetId: { type: "string" },
       },
     },
-    handler: async (req, reply) => {
-      reply.send({ message: "Hello from get all target types route" });
-    },
+    handler: GetTargetRingsByTargetId,
   });
 
   fastify.route({
     method: "POST",
-    url: `${targetTypePath}/`,
+    url: `${targetTypePath}`,
     handler: async (req, reply) => {
       reply.send({ message: "Hello from create target type route" });
     },

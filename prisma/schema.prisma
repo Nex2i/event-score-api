@@ -89,8 +89,9 @@ model Shot {
 }
 
 model TargetType {
-  id          String   @id @default(uuid())
-  isTemplate  Boolean  @default(false)
+  id         String  @id @default(uuid())
+  isTemplate Boolean @default(false)
+
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now())
 
@@ -99,7 +100,11 @@ model TargetType {
 }
 
 model TargetTypeRing {
-  id           String @id @default(uuid())
+  id         String @id @default(uuid())
+  color      String @default("#808080")
+  value      Int    @default(0)
+  orderIndex Int    @default(0)
+
   targetTypeId String
 
   dateCreated DateTime @default(now())

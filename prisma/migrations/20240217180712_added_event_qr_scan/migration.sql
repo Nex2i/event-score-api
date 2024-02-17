@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "TargetTypeRing" ADD COLUMN     "color" TEXT NOT NULL DEFAULT '#808080',
+ADD COLUMN     "value" INTEGER NOT NULL DEFAULT 0;
