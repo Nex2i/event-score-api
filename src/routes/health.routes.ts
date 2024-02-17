@@ -1,3 +1,4 @@
+import { dbClient } from "@/db/db.client";
 import { FastifyInstance, RouteOptions } from "fastify";
 
 export default async function Health(
@@ -8,6 +9,7 @@ export default async function Health(
     method: "GET",
     url: "/health",
     handler: async (request, reply) => {
+      await dbClient.$queryRaw`SELECT 1`;
       return { status: "ok" };
     },
   });
