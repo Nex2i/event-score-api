@@ -23,6 +23,7 @@ async function startServer() {
       plugins: [],
     },
     logger: true,
+    trustProxy: true,
   }).withTypeProvider<TypeBoxTypeProvider>();
 
   const port: number = Number(PORT) ?? 3001;
