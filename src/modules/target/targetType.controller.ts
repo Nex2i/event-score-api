@@ -52,7 +52,7 @@ function mapTargetTypeToRings(targetType: dbRingSchema) {
   return {
     id: targetType.id,
     rings: targetType.TargetTypeRings.sort(
-      (a, b) => a.orderIndex - b.orderIndex
+      (a, b) => b.orderIndex - a.orderIndex
     ).map((r) => ({
       id: r.id,
       color: r.color,
