@@ -28,6 +28,9 @@ export async function GetCompayEvents(
     where: {
       companyId: companyId,
     },
+    orderBy: {
+      dateCreated: "desc",
+    },
   });
   reply.send({ events });
 }
