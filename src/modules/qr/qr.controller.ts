@@ -8,5 +8,12 @@ export async function RecordEventQr(
 ) {
   const { id } = req.params;
 
+  await dbClient.eventQRScan.create({
+    data: {
+      eventId: id,
+      ipAddress: req.ip,
+    },
+  });
+
   reply.redirect(301, `${FRONTEND_ORIGIN}/public/event/${id}`);
 }

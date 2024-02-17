@@ -41,7 +41,8 @@ model Event {
   dateUpdated DateTime @default(now())
 
   Courses Course[]
-  Company Company  @relation(fields: [companyId], references: [id])
+  Company Company       @relation(fields: [companyId], references: [id])
+  QRScan  EventQRScan[]
 }
 
 model Course {
@@ -162,4 +163,16 @@ model UserCourseRecord {
 
   User   User   @relation(fields: [userId], references: [id])
   Course Course @relation(fields: [courseId], references: [id])
+}
+
+model EventQRScan {
+  id        String @id @default(uuid())
+  ipAddress String
+
+  eventId String
+
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id])
 }
