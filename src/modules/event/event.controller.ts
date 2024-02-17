@@ -40,7 +40,15 @@ export async function GetEvent(
   const event = await dbClient.event.findUnique({
     where: { id: id },
     include: {
-      Courses: true,
+      Courses: {
+        include: {
+          Targets: {
+            include: {
+              Shots: true,
+            },
+          },
+        },
+      },
     },
   });
 

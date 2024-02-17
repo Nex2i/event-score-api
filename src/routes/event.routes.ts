@@ -22,7 +22,7 @@ export default async function Event(
 
   fastify.route({
     method: "GET",
-    url: `${eventPath}/`,
+    url: `${eventPath}`,
     handler: GetCompayEvents,
     schema: {
       querystring: {
@@ -36,7 +36,7 @@ export default async function Event(
 
   fastify.route({
     method: "POST",
-    url: `${eventPath}/`,
+    url: `${eventPath}`,
     handler: CreateEvent,
     schema: CreateEventSchema,
   });
