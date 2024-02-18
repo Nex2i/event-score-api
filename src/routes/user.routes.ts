@@ -9,7 +9,7 @@ export default async function User(
 ) {
   fastify.route({
     method: "POST",
-    url: `${userPath}/guest`,
+    url: `${userPath}/guest/:eventId`,
     handler: CreateGuestUser,
     schema: {
       params: {

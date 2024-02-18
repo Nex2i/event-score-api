@@ -13,6 +13,16 @@ export function isValidAuthDto(authDto: AuthDto): boolean {
   return authDto.email !== "" && authDto.companyId !== "";
 }
 
+export class GuestResponseDto extends AuthDto {
+  constructor(user: User) {
+    super();
+    this.companyId = user.companyId;
+  }
+  addToken(token: string) {
+    this.token = token;
+  }
+}
+
 export class LoginResponseDto extends AuthDto {
   constructor(user: User, authUser: UserAuth) {
     super();

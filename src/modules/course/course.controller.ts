@@ -37,12 +37,15 @@ export async function CreateCourse(
 ) {
   const { name, eventId, targets } = req.body;
 
-  const targetsCreate = targets.map((target) => ({
+  const targetsCreate = targets.map((target, i) => ({
     name: target.name,
     distance: target.distance,
     targetTypeId: target.targetTypeId,
+    orderIndex: i,
     Shots: {
-      create: target.shots.map((_shot) => ({})),
+      create: target.shots.map((_shot, i) => ({
+        orderIndex: i,
+      })),
     },
   }));
 
@@ -57,7 +60,14 @@ export async function CreateCourse(
     include: {
       Targets: {
         include: {
-          Shots: true,
+          Shots: {
+            orderBy: {
+              orderIndex: "asc",
+            },
+          },
+        },
+        orderBy: {
+          orderIndex: "asc",
         },
       },
     },

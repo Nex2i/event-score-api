@@ -47,7 +47,14 @@ export async function GetEvent(
         include: {
           Targets: {
             include: {
-              Shots: true,
+              Shots: {
+                orderBy: {
+                  orderIndex: "asc",
+                },
+              },
+            },
+            orderBy: {
+              orderIndex: "asc",
             },
           },
         },

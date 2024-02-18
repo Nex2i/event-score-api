@@ -60,9 +60,10 @@ model Course {
 }
 
 model Target {
-  id       String @id @default(uuid())
-  name     String @default("")
-  distance Int    @default(0)
+  id         String @id @default(uuid())
+  name       String @default("")
+  distance   Int    @default(0)
+  orderIndex Int    @default(0)
 
   courseId     String
   targetTypeId String
@@ -77,7 +78,8 @@ model Target {
 }
 
 model Shot {
-  id String @id @default(uuid())
+  id         String @id @default(uuid())
+  orderIndex Int    @default(0)
 
   targetId String
 

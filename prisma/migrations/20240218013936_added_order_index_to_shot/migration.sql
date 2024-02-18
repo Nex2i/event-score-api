@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Shot" ADD COLUMN     "orderIndex" INTEGER NOT NULL DEFAULT 0;

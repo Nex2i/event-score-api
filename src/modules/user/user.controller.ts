@@ -1,6 +1,7 @@
 import { dbClient, USER_TYPE } from "@/db/db.client";
 import { NotFound } from "@/exceptions/error";
 import { FastifyRequest, FastifyReply } from "fastify";
+import { GuestResponseDto } from "../authentication/auth.types";
 
 export async function CreateGuestUser(
   req: FastifyRequest<{ Params: { eventId: string } }>,
@@ -21,8 +22,11 @@ export async function CreateGuestUser(
     },
   });
 
-  const accessToken = await reply.jwtSign({ payload: guestUser });
+  const guestResponse = new GuestResponseDto(guestUser);
+  const accessToken = await reply.jwtSign({ payload: guestResponse });
+
+  guestResponse.addToken(accessToken);
   reply
     .status(201)
-    .send({ message: "Guest user created", guestUser, accessToken });
+    .send({ message: "Guest user created", user: guestResponse });
 }
