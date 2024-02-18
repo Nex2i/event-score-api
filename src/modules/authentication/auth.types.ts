@@ -16,6 +16,7 @@ export function isValidAuthDto(authDto: AuthDto): boolean {
 export class GuestResponseDto extends AuthDto {
   constructor(user: User) {
     super();
+    this.userId = user.id;
     this.companyId = user.companyId;
   }
   addToken(token: string) {

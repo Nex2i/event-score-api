@@ -157,6 +157,8 @@ model UserShot {
   Target Target @relation(fields: [targetId], references: [id])
   User   User   @relation(fields: [userId], references: [id])
   Shot   Shot   @relation(fields: [shotId], references: [id])
+
+  @@unique([userId, shotId])
 }
 
 model UserCourseRecord {

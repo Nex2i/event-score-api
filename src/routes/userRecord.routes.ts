@@ -1,5 +1,5 @@
-import { PostUserShotSchema } from "@/modules/user/schemas/PostUserShot.schema";
-import { RecordUserShot } from "@/modules/user/userRecord.controller";
+import { PostUserShotSchema } from "@/modules/userRecord/schemas/PostUserShot.schema";
+import { RecordUserShot } from "@/modules/userRecord/userRecord.controller";
 import { FastifyInstance, RouteOptions } from "fastify";
 
 const userPath = "/user-record";
@@ -10,9 +10,9 @@ export default async function User(
 ) {
   fastify.route({
     method: "POST",
-    url: `${userPath}/shot`,
+    url: `${userPath}/course/submit`,
     handler: RecordUserShot,
     schema: PostUserShotSchema,
-    preHandler: [fastify.authenticateUser],
+    preHandler: [fastify.authenticateGuestUser],
   });
 }

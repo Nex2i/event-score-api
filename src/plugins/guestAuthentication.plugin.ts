@@ -1,10 +1,8 @@
+import { Unauthorized } from "@/exceptions/error";
 import { FastifyInstance, FastifyRequest } from "fastify";
-import { fastifyPlugin } from "fastify-plugin";
+import fastifyPlugin from "fastify-plugin";
 
-import { Unauthorized } from "@exceptions/error";
-import { USER_TYPE, User } from "@/db/db.client";
-
-export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
+export default fastifyPlugin(async (fastify: FastifyInstance) => {
   const authPreHandler = async (request: FastifyRequest) => {
     try {
       if (!request.headers?.authorization?.includes("Bearer")) {
@@ -14,9 +12,7 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
         "Bearer "
       )[1] as string;
 
-      const payload = fastify.jwt.verify(authorization) as User;
-
-      if (payload.type !== USER_TYPE.ADMIN) throw new Unauthorized();
+      const payload = fastify.jwt.verify(authorization);
 
       request.user = payload;
     } catch (error) {
@@ -24,5 +20,5 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
       throw new Unauthorized();
     }
   };
-  fastify.decorate("authenticateUser", authPreHandler);
+  fastify.decorate("authenticateGuestUser", authPreHandler);
 });
