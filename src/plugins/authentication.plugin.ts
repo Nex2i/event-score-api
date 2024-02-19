@@ -2,7 +2,8 @@ import { FastifyInstance, FastifyRequest } from "fastify";
 import { fastifyPlugin } from "fastify-plugin";
 
 import { Unauthorized } from "@exceptions/error";
-import { USER_TYPE, User } from "@/db/db.client";
+import { USER_TYPE } from "@/db/db.client";
+import { AuthDto } from "@/modules/authentication/auth.types";
 
 export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
   const authPreHandler = async (request: FastifyRequest) => {
@@ -14,10 +15,13 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
         "Bearer "
       )[1] as string;
 
-      const payload = fastify.jwt.verify(authorization) as User;
+      const { payload } = fastify.jwt.verify(authorization) as {
+        payload: AuthDto;
+      };
 
-      if (payload.type !== USER_TYPE.ADMIN) throw new Unauthorized();
+      if (payload.userType !== USER_TYPE.ADMIN) throw new Unauthorized();
 
+      console.log("ASSIGN", payload);
       request.user = payload;
     } catch (error) {
       console.log("AUTH ERROR", error);

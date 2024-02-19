@@ -4,7 +4,7 @@ import { cryptHash, stringMatchesHash } from "@/libs/bcrypt";
 import { FastifyRequest, FastifyReply } from "fastify";
 import {
   AuthDto,
-  LoginResponseDto,
+  AdminLoginResponseDto,
   RegisterDto,
   isValidAuthDto,
 } from "./auth.types";
@@ -44,7 +44,7 @@ export async function AuthLogin(
 }
 
 export async function AuthCheck(req: FastifyRequest, reply: FastifyReply) {
-  const user = (req.user as { payload: AuthDto }).payload;
+  const user = req.user as AuthDto;
 
   if (!user || !isValidAuthDto(user)) {
     throw new Unauthorized();
@@ -121,7 +121,7 @@ export async function AuthRegister(
       throw new BadRequest(err.message);
     });
 
-  const userResponse = new LoginResponseDto(newUser, newUserAuth);
+  const userResponse = new AdminLoginResponseDto(newUser, newUserAuth);
 
   const accessToken = await reply.jwtSign({ payload: userResponse });
 

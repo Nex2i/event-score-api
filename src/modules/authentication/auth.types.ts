@@ -18,13 +18,14 @@ export class GuestResponseDto extends AuthDto {
     super();
     this.userId = user.id;
     this.companyId = user.companyId;
+    this.userType = USER_TYPE.GUEST;
   }
   addToken(token: string) {
     this.token = token;
   }
 }
 
-export class LoginResponseDto extends AuthDto {
+export class AdminLoginResponseDto extends AuthDto {
   constructor(user: User, authUser: UserAuth) {
     super();
     this.email = authUser.email;
@@ -32,6 +33,7 @@ export class LoginResponseDto extends AuthDto {
     this.companyId = user.companyId;
     this.userType = user.type;
     this.userId = user.id;
+    this.userType = USER_TYPE.ADMIN;
   }
 
   addToken(token: string) {

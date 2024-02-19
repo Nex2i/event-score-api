@@ -1,10 +1,10 @@
 import { dbClient } from "@/db/db.client";
-import { LoginResponseDto } from "./auth.types";
+import { AdminLoginResponseDto } from "./auth.types";
 import { Unauthorized } from "@/exceptions/error";
 
 export async function GetAuthenticatedUser(
   userId: string
-): Promise<LoginResponseDto> {
+): Promise<AdminLoginResponseDto> {
   const authUser = await dbClient.userAuth.findFirst({
     where: {
       userId: userId,
@@ -21,7 +21,7 @@ export async function GetAuthenticatedUser(
     throw new Unauthorized("User not found");
   }
 
-  const userResponse = new LoginResponseDto(user, authUser);
+  const userResponse = new AdminLoginResponseDto(user, authUser);
 
   return userResponse;
 }
