@@ -1,5 +1,6 @@
 export interface UserCourseDataModel {
   courseId: string;
+  username: string;
   totalScore: number;
   targets: UserTargetDataModel[];
 }

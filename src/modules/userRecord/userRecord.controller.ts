@@ -12,13 +12,14 @@ export async function RecordUserShot(
   reply: FastifyReply
 ) {
   const { userId } = (req.user as { payload: { userId: string } }).payload;
-  const { courseId, targets, totalScore } = req.body;
+  const { courseId, username, targets, totalScore } = req.body;
 
   await dbClient.userCourseRecord.create({
     data: {
       courseId,
       userId,
       totalScore,
+      username,
     },
   });
 

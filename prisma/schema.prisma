@@ -163,9 +163,11 @@ model UserShot {
 
 model UserCourseRecord {
   id         String @id @default(uuid())
-  userId     String
-  courseId   String
   totalScore Int
+  username   String
+
+  userId   String
+  courseId String
 
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now())
