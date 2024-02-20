@@ -11,6 +11,7 @@ import { schema } from "@utils/validateEnv";
 import { join } from "path";
 import { defaultErrorMessage } from "./constants";
 import { dbClient } from "./db/db.client";
+import { schedulePing } from "./utils/self-ping";
 
 async function startServer() {
   const app: FastifyInstance = Fastify({
@@ -73,6 +74,7 @@ async function startServer() {
     await app.listen({ port, host: "0.0.0.0" });
     await dbClient.$connect();
     console.log(`Server running on port ${port}`);
+    schedulePing();
   } catch (err) {
     app.log.error("APP ERROR", err);
     dbClient.$disconnect();

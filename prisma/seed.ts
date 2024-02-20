@@ -23,6 +23,7 @@ async function main() {
     await prisma.targetTypeRing.create({
       data: {
         targetTypeId: targetType.id,
+        orderIndex: i,
         dateCreated: new Date(),
         dateUpdated: new Date(),
       },

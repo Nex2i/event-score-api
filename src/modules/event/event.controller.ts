@@ -40,6 +40,8 @@ export async function GetEvent(
   reply: FastifyReply
 ) {
   const { id } = req.params;
+
+  console.log("HER", id);
   const event = await dbClient.event.findUnique({
     where: { id: id },
     include: {
