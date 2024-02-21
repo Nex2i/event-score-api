@@ -2,7 +2,9 @@ import cluster from "cluster";
 import os from "os";
 import App from "./app";
 
-if (cluster.isPrimary) {
+const isClusterEnabled = false;
+
+if (cluster.isPrimary && isClusterEnabled) {
   const numCPUs = os.cpus().length;
 
   console.log(`Master ${process.pid} is running`);
