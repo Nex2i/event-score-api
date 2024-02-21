@@ -13,17 +13,28 @@ async function main() {
   // Create a TargetType (assuming one type for simplicity)
   const targetType = await prisma.targetType.create({
     data: {
+      id: "e32ff699-2353-411e-b51f-0999a35c56e3",
       dateCreated: new Date(),
       dateUpdated: new Date(),
     },
   });
 
   // Create 5 targetTypeRing records
+  const defaultColors = [
+    "rgb(204, 176, 60)",
+    "rgb(153, 51, 51)",
+    "rgb(58, 110, 165)",
+    "rgb(51, 51, 51)",
+    "rgb(240, 240, 240)",
+  ];
+  const defaultValues = [12, 10, 8, 5, 0];
   for (let i = 1; i <= 5; i++) {
     await prisma.targetTypeRing.create({
       data: {
         targetTypeId: targetType.id,
         orderIndex: i,
+        value: defaultValues[i - 1],
+        color: defaultColors[i - 1],
         dateCreated: new Date(),
         dateUpdated: new Date(),
       },
