@@ -74,7 +74,7 @@ async function startServer() {
     await app.listen({ port, host: "0.0.0.0" });
     await dbClient.$connect();
     console.log(`Server running on port ${port}`);
-    schedulePing();
+    // schedulePing();
   } catch (err) {
     app.log.error("APP ERROR", err);
     dbClient.$disconnect();
