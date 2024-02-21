@@ -11,7 +11,6 @@ import { schema } from "@utils/validateEnv";
 import { join } from "path";
 import { defaultErrorMessage } from "./constants";
 import { dbClient } from "./db/db.client";
-import { schedulePing } from "./utils/self-ping";
 
 async function startServer() {
   const app: FastifyInstance = Fastify({
