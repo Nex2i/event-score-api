@@ -21,7 +21,6 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
 
       if (payload.userType !== USER_TYPE.ADMIN) throw new Unauthorized();
 
-      console.log("ASSIGN", payload);
       request.user = payload;
     } catch (error) {
       console.log("AUTH ERROR", error);
