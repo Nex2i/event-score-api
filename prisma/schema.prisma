@@ -24,7 +24,7 @@ model Company {
   zip            String  @default("")
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   events Event[]
   User   User[]
@@ -39,7 +39,7 @@ model Event {
   companyId String
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   Courses Course[]
   Company Company       @relation(fields: [companyId], references: [id])
@@ -53,7 +53,7 @@ model Course {
   eventId String
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   Targets           Target[]
   Event             Event              @relation(fields: [eventId], references: [id])
@@ -70,7 +70,7 @@ model Target {
   targetTypeId String
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   TargetType TargetType @relation(fields: [targetTypeId], references: [id])
   Course     Course     @relation(fields: [courseId], references: [id])
@@ -85,7 +85,7 @@ model Shot {
   targetId String
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   Target    Target     @relation(fields: [targetId], references: [id])
   UserShots UserShot[]
@@ -96,7 +96,7 @@ model TargetType {
   isTemplate Boolean @default(false)
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   Targets         Target[]
   TargetTypeRings TargetTypeRing[]
@@ -111,7 +111,7 @@ model TargetTypeRing {
   targetTypeId String
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   TargetType TargetType @relation(fields: [targetTypeId], references: [id])
 }
@@ -122,7 +122,7 @@ model User {
   companyId String
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   UserShots         UserShot[]
   UserCourseRecords UserCourseRecord[]
@@ -138,7 +138,7 @@ model UserAuth {
   hashedPassword String
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   User User @relation(fields: [userId], references: [id])
 
@@ -153,7 +153,7 @@ model UserShot {
   score    Int
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   Target Target @relation(fields: [targetId], references: [id])
   User   User   @relation(fields: [userId], references: [id])
@@ -171,7 +171,7 @@ model UserCourseRecord {
   courseId String
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   User   User   @relation(fields: [userId], references: [id])
   Course Course @relation(fields: [courseId], references: [id])
@@ -184,7 +184,7 @@ model EventQRScan {
   eventId String
 
   dateCreated DateTime @default(now())
-  dateUpdated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
 
   event Event @relation(fields: [eventId], references: [id])
 }
