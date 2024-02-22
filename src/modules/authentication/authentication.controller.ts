@@ -1,12 +1,12 @@
 import { dbClient } from "@/db/db.client";
 import { BadRequest, NotFound, Unauthorized } from "@/exceptions/error";
-import { cryptHash, stringMatchesHash } from "@/libs/bcrypt";
+import { stringMatchesHash } from "@/libs/bcrypt";
 import { FastifyRequest, FastifyReply } from "fastify";
 import {
   AuthDto,
-  AdminLoginResponseDto,
   RegisterDto,
   isValidAuthDto,
+  AdminRegisterResponseDto,
 } from "./auth.types";
 import {
   CreateNewAdminUser,
@@ -17,7 +17,6 @@ import {
   GetAuthenticatedUser,
 } from "./auth.service";
 import { stripeRepository } from "@/libs/stripe/stripe.repository";
-import { CreateStripeCustomer } from "@/libs/stripe/stripe.types";
 
 // in-memory store for simplicity
 let blacklistedTokens = new Set();
@@ -124,9 +123,13 @@ export async function AuthRegister(
 
   const paymentId = await CreatePaymentCustomer(newCompany.id, req.body);
 
-  const userResponse = new AdminLoginResponseDto(newUser, newUserAuth);
+  const userResponse = new AdminRegisterResponseDto(newUser, newUserAuth);
 
   userResponse.addPaymentId(paymentId);
+
+  const initCheckoutUrl = await stripeRepository.getInitCheckoutUrl(paymentId);
+
+  userResponse.addCheckoutUrl(initCheckoutUrl);
 
   const accessToken = await reply.jwtSign({ payload: userResponse });
 

@@ -14,6 +14,19 @@ enum USER_TYPE {
   ADMIN
 }
 
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+  ONBOARDING
+  DELINQUENT
+}
+
 model Company {
   id             String  @id @default(uuid())
   name           String
@@ -32,9 +45,11 @@ model Company {
 }
 
 model CompanyPayment {
-  id                String @id @default(uuid())
+  id                String        @id @default(uuid())
   companyId         String
-  externalPaymentId String @unique
+  externalPaymentId String        @unique
+  accountStatus     AccountStatus @default(ONBOARDING)
+  status            PaymentStatus @default(PENDING)
 
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now()) @updatedAt

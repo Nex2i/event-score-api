@@ -46,6 +46,17 @@ export class AdminLoginResponseDto extends AuthDto {
   }
 }
 
+export class AdminRegisterResponseDto extends AdminLoginResponseDto {
+  checkoutUrl: string = "";
+  constructor(user: User, authUser: UserAuth) {
+    super(user, authUser);
+  }
+
+  addCheckoutUrl(checkoutUrl: string) {
+    this.checkoutUrl = checkoutUrl;
+  }
+}
+
 export class RegisterDto {
   companyName: string = "";
   email: string = "";
