@@ -26,8 +26,20 @@ model Company {
   dateCreated DateTime @default(now())
   dateUpdated DateTime @default(now()) @updatedAt
 
-  events Event[]
-  User   User[]
+  events         Event[]
+  User           User[]
+  CompanyPayment CompanyPayment[]
+}
+
+model CompanyPayment {
+  id                String @id @default(uuid())
+  companyId         String
+  externalPaymentId String @unique
+
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now()) @updatedAt
+
+  Company Company @relation(fields: [companyId], references: [id])
 }
 
 model Event {

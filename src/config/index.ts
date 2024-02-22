@@ -8,4 +8,6 @@ export const {
   CREDENTIALS,
   SECRET_KEY,
   FRONTEND_ORIGIN,
+  DATABASE_URL,
+  STRIPE_API_KEY,
 } = process.env;

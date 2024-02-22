@@ -7,6 +7,7 @@ export class AuthDto {
   email: string = "";
   companyId: string = "";
   userType: USER_TYPE = USER_TYPE.GUEST;
+  paymentId: string = "";
 }
 
 export function isValidAuthDto(authDto: AuthDto): boolean {
@@ -39,11 +40,17 @@ export class AdminLoginResponseDto extends AuthDto {
   addToken(token: string) {
     this.token = token;
   }
+
+  addPaymentId(paymentId: string) {
+    this.paymentId = paymentId;
+  }
 }
 
 export class RegisterDto {
   companyName: string = "";
   email: string = "";
+  firstName: string = "";
+  lastName: string = "";
   phoneNumber: string = "";
   password: string = "";
   streetAddress1: string = "";

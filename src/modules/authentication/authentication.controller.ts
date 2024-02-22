@@ -8,7 +8,16 @@ import {
   RegisterDto,
   isValidAuthDto,
 } from "./auth.types";
-import { GetAuthenticatedUser } from "./auth.service";
+import {
+  CreateNewAdminUser,
+  CreateNewCompany,
+  CreateNewUserAuth,
+  CreatePaymentCustomer,
+  GetAuthenticatedBillingInfo,
+  GetAuthenticatedUser,
+} from "./auth.service";
+import { stripeRepository } from "@/libs/stripe/stripe.repository";
+import { CreateStripeCustomer } from "@/libs/stripe/stripe.types";
 
 // in-memory store for simplicity
 let blacklistedTokens = new Set();
@@ -57,6 +66,10 @@ export async function AuthCheck(req: FastifyRequest, reply: FastifyReply) {
 
   const userResponse = await GetAuthenticatedUser(user.userId);
 
+  const paymentId = await GetAuthenticatedBillingInfo(user.companyId);
+
+  userResponse.addPaymentId(paymentId);
+
   const accessToken = await reply.jwtSign({ payload: userResponse });
 
   userResponse.addToken(accessToken);
@@ -79,49 +92,41 @@ export async function AuthRegister(
   req: FastifyRequest<{ Body: RegisterDto }>,
   reply: FastifyReply
 ) {
-  const newCompany = await dbClient.company
-    .create({
-      data: {
-        name: req.body.companyName,
-        streetAddress1: req.body.streetAddress1,
-        streetAddress2: req.body.streetAddress2,
-        city: req.body.city,
-        state: req.body.state,
-        zip: req.body.zip,
-      },
-    })
-    .catch((err) => {
-      console.log("ERROR", err);
-      throw new BadRequest(err.message);
-    });
+  const {
+    companyName,
+    streetAddress1,
+    streetAddress2,
+    city,
+    state,
+    zip,
+    email,
+    phoneNumber,
+    password,
+  } = req.body;
 
-  const newUser = await dbClient.user
-    .create({
-      data: {
-        type: req.body.userType,
-        companyId: newCompany.id,
-      },
-    })
-    .catch((err) => {
-      console.log("ERROR", err);
-      throw new BadRequest(err.message);
-    });
+  const newCompany = await CreateNewCompany(
+    companyName,
+    city,
+    state,
+    zip,
+    streetAddress1,
+    streetAddress2
+  );
 
-  const newUserAuth = await dbClient.userAuth
-    .create({
-      data: {
-        userId: newUser.id,
-        email: req.body.email,
-        phoneNumber: req.body.phoneNumber,
-        hashedPassword: await cryptHash(req.body.password),
-      },
-    })
-    .catch((err) => {
-      console.log("ERROR", err);
-      throw new BadRequest(err.message);
-    });
+  const newUser = await CreateNewAdminUser(newCompany.id);
+
+  const newUserAuth = await CreateNewUserAuth(
+    newUser.id,
+    email,
+    phoneNumber,
+    password
+  );
+
+  const paymentId = await CreatePaymentCustomer(newCompany.id, req.body);
 
   const userResponse = new AdminLoginResponseDto(newUser, newUserAuth);
+
+  userResponse.addPaymentId(paymentId);
 
   const accessToken = await reply.jwtSign({ payload: userResponse });
 
