@@ -11,7 +11,7 @@ const stripeSchema = {
 export default async function StripeRoutes(fastify: FastifyInstance) {
   fastify.route({
     method: "GET",
-    url: "/stripe/portal/:customerId",
+    url: "/stripe/portal/:companyId",
     handler: CreateBillingPortal,
     schema: stripeSchema,
   });
