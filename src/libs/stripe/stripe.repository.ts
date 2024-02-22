@@ -47,7 +47,7 @@ class StripeRepository {
       ],
       currency: "usd",
       success_url: `${FRONTEND_ORIGIN}/events`,
-      cancel_url: `${FRONTEND_ORIGIN}/auth`,
+      // cancel_url: `${FRONTEND_ORIGIN}/auth`,
     });
   }
 
