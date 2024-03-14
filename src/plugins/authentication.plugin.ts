@@ -19,12 +19,15 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
         payload: AuthDto;
       };
 
-      if (payload.userType !== USER_TYPE.ADMIN) throw new Unauthorized();
+      if (payload.userType !== USER_TYPE.ADMIN)
+        throw new Unauthorized("User not admin");
 
       request.user = payload;
     } catch (error) {
       console.log("AUTH ERROR", error);
-      throw new Unauthorized("There was an error: \n" + JSON.stringify(error));
+      throw new Unauthorized(
+        "There was an error: \n" + JSON.stringify(request.headers.authorization)
+      );
     }
   };
   fastify.decorate("authenticateUser", authPreHandler);
