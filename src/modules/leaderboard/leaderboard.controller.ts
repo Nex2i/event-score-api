@@ -56,7 +56,6 @@ const getAverageUserShotByEventId = async (eventId: string) => {
     orderBy: {
       orderIndex: "asc",
     },
-    cacheStrategy: { ttl: 60 * 10 },
   });
 
   // Then, for each target, calculate the average score of UserShots
@@ -69,7 +68,6 @@ const getAverageUserShotByEventId = async (eventId: string) => {
         where: {
           targetId: target.id,
         },
-        cacheStrategy: { ttl: 60 * 10 },
       });
 
       return {
