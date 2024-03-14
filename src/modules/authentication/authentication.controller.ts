@@ -18,9 +18,6 @@ import {
 } from "./auth.service";
 import { stripeRepository } from "@/libs/stripe/stripe.repository";
 
-// in-memory store for simplicity
-let blacklistedTokens = new Set();
-
 export async function AuthLogin(
   req: FastifyRequest<{ Body: { email: string; password: string } }>,
   reply: FastifyReply
@@ -58,11 +55,6 @@ export async function AuthCheck(req: FastifyRequest, reply: FastifyReply) {
     throw new Unauthorized("User is not valid");
   }
 
-  const token = req.headers.authorization?.split(" ")[1];
-  if (token && blacklistedTokens.has(token)) {
-    throw new Unauthorized("Token is invalidated");
-  }
-
   const userResponse = await GetAuthenticatedUser(user.userId);
 
   const paymentId = await GetAuthenticatedBillingInfo(user.companyId);
@@ -82,8 +74,6 @@ export async function AuthLogout(req: FastifyRequest, reply: FastifyReply) {
   if (!token) {
     return reply.send({ message: "Logged out successfully" });
   }
-  // Add the token to the blacklist
-  blacklistedTokens.add(token);
   reply.send({ message: "Logged out successfully" });
 }
 
