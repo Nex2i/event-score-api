@@ -38,7 +38,6 @@ const getUserLeaderboard = async (eventId: string) => {
     orderBy: {
       totalScore: "desc", // Orders by totalScore in descending order
     },
-    cacheStrategy: { ttl: 60 * 10 },
   });
 };
 
