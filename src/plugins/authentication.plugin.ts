@@ -24,7 +24,7 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
       request.user = payload;
     } catch (error) {
       console.log("AUTH ERROR", error);
-      throw new Unauthorized();
+      throw new Unauthorized("There was an error: \n" + JSON.stringify(error));
     }
   };
   fastify.decorate("authenticateUser", authPreHandler);

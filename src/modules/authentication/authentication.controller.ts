@@ -55,7 +55,7 @@ export async function AuthCheck(req: FastifyRequest, reply: FastifyReply) {
   const user = req.user as AuthDto;
 
   if (!user || !isValidAuthDto(user)) {
-    throw new Unauthorized();
+    throw new Unauthorized("User is not valid");
   }
 
   const token = req.headers.authorization?.split(" ")[1];
