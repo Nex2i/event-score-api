@@ -15,6 +15,8 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
         "Bearer "
       )[1] as string;
 
+      console.log("AUTHORIZATION", authorization);
+
       const { payload } = fastify.jwt.verify(authorization) as {
         payload: AuthDto;
       };
@@ -26,7 +28,10 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
     } catch (error) {
       console.log("AUTH ERROR", error);
       throw new Unauthorized(
-        "There was an error: \n" + JSON.stringify(request.headers.authorization)
+        "There was an error: \n" +
+          JSON.stringify(request?.headers?.authorization) +
+          "\n" +
+          error
       );
     }
   };
