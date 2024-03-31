@@ -12,6 +12,13 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
         throw Error("No Authorization Header");
       }
 
+      const token = request.headers.authorization.split(" ")[1] as string;
+      const decoded = fastify.jwt.decode(token);
+
+      // Log server and token times for comparison
+      console.log("Server Time:", new Date().toISOString());
+      console.log("Token Expiry Time:", decoded);
+
       const { payload } = (await request.jwtVerify()) as {
         payload: AuthDto;
       };
