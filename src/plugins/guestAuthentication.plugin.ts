@@ -13,7 +13,7 @@ export default fastifyPlugin(async (fastify: FastifyInstance) => {
 
       request.user = payload;
     } catch (error) {
-      console.log("AUTH ERROR", error);
+      console.log("AUTH ERROR", error, request?.headers?.authorization);
       throw new Unauthorized();
     }
   };
