@@ -37,7 +37,7 @@ async function startServer() {
   await app.register(fastifyHelmet);
   await app.register(fastifyJwt, {
     secret: SECRET_KEY ?? "",
-    sign: { expiresIn: "7d" },
+    sign: { expiresIn: "7d" },    
   });
 
   //Init Custom Plugins

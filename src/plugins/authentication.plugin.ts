@@ -11,13 +11,8 @@ export default fastifyPlugin(async (fastify: FastifyInstance, _: unknown) => {
       if (!request.headers?.authorization?.includes("Bearer")) {
         throw Error("No Authorization Header");
       }
-      const authorization = request.headers.authorization.split(
-        "Bearer "
-      )[1] as string;
 
-      console.log("AUTHORIZATION", authorization);
-
-      const { payload } = fastify.jwt.verify(authorization) as {
+      const { payload } = (await request.jwtVerify()) as {
         payload: AuthDto;
       };
 

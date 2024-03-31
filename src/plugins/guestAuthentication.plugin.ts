@@ -8,11 +8,8 @@ export default fastifyPlugin(async (fastify: FastifyInstance) => {
       if (!request.headers?.authorization?.includes("Bearer")) {
         throw Error("No Authorization Header");
       }
-      const authorization = request.headers.authorization.split(
-        "Bearer "
-      )[1] as string;
 
-      const payload = fastify.jwt.verify(authorization);
+      const payload = await request.jwtVerify();
 
       request.user = payload;
     } catch (error) {
