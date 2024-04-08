@@ -15,5 +15,5 @@ export async function RecordEventQr(
     },
   });
 
-  reply.redirect(302, `${FRONTEND_ORIGIN}/open/event/${id}`);
+  reply.redirect(302, `${FRONTEND_ORIGIN}/open/event/${id}/individual`);
 }

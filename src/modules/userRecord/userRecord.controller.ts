@@ -7,12 +7,22 @@ import {
 
 export async function RecordUserShot(
   req: FastifyRequest<{
-    Body: UserCourseDataModel;
+    Body: Record<string, UserCourseDataModel>;
   }>,
   reply: FastifyReply
 ) {
   const { userId } = req.user as { userId: string };
-  const { courseId, username, targets, totalScore } = req.body;
+  const coursesList = Object.values(req.body);
+
+  for (const courseData of coursesList) {
+    await recordUserData(userId, courseData);
+  }
+
+  reply.code(201).send({ message: "Course submitted successfully" });
+}
+
+async function recordUserData(userId: string, courseData: UserCourseDataModel) {
+  const { courseId, username, targets, totalScore } = courseData;
 
   await dbClient.userCourseRecord.create({
     data: {
@@ -46,8 +56,6 @@ export async function RecordUserShot(
 
   // Execute all upsert operations within a transaction
   await dbClient.$transaction(upsertPromises);
-
-  reply.code(201).send({ message: "Course submitted successfully" });
 }
 
 function flattenShotsWithSchema(
