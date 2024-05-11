@@ -10,9 +10,9 @@ export default async function User(
 ) {
   fastify.route({
     method: "POST",
-    url: `${userPath}/course/submit`,
+    url: `${userPath}/course/submit/:eventId`,
     handler: RecordUserShot,
     schema: PostUserShotSchema,
-    preHandler: [fastify.authenticateGuestUser],
+    // preHandler: [fastify.authenticateGuestUser],
   });
 }

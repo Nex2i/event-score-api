@@ -4,17 +4,19 @@ import {
   UserCourseDataModel,
   UserTargetDataModel,
 } from "./types/userCourseModel";
+import { createGuestUser } from "../user/user.controller";
 
 export async function RecordUserShot(
   req: FastifyRequest<{
     Body: Record<string, UserCourseDataModel>;
+    Params: { eventId: string };
   }>,
   reply: FastifyReply
 ) {
-  const { userId } = req.user as { userId: string };
   const coursesList = Object.values(req.body);
 
   for (const courseData of coursesList) {
+    const { id: userId } = await createGuestUser(req.params.eventId);
     await recordUserData(userId, courseData);
   }
 
